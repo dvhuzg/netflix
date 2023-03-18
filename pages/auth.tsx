@@ -1,18 +1,50 @@
+import axios from "axios";
 import Input from "../components/Input";
 import { useState, useCallback } from "react";
-import { P } from "../../ft-base-client/src/components/NotFoundPage/P";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
+
 const Auth = () => {
-  const [userName, setUserName] = useState("");
+  const router = useRouter();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [variants, setVariants] = useState("");
+  const [variants, setVariants] = useState("login");
 
   const toggleVariants = useCallback(() => {
     setVariants((currentVariants) =>
       currentVariants === "login" ? "register" : "login"
     );
   }, []);
+
+  const login = useCallback(async () => {
+    try {
+      await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+        callbackUrl: "/",
+      });
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
+  }, [email, password, router]);
+
+  const register = useCallback(async () => {
+    try {
+      await axios.post("/api/register", {
+        email,
+        name,
+        password,
+      });
+      login();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [email, name, password, login]);
+
   return (
     <div className="relative h-full w-full bg-[url('/images/hero.jpg')] bg-no- bg-center bg-fixed bg-cover">
       <div className="bg-black w-full h-full lg:bg-opacity-50">
@@ -27,12 +59,12 @@ const Auth = () => {
             <div className="flex flex-col gap-4">
               {variants === "register" && (
                 <Input
-                  id="username"
+                  id="name"
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setUserName(e.target.value)
+                    setName(e.target.value)
                   }
-                  value={userName}
-                  label="Username"
+                  value={name}
+                  label="Name"
                 />
               )}
 
@@ -44,6 +76,7 @@ const Auth = () => {
                 value={email}
                 label="Email"
               />
+
               <Input
                 id="password"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -52,7 +85,10 @@ const Auth = () => {
                 value={password}
                 label="Password"
               />
-              <button className="bg-red-500 py-3 text-white rounded-md w-full mt-10 hover:bg-red-700 transition">
+
+              <button
+                onClick={variants === "login" ? login : register}
+                className="bg-red-500 py-3 text-white rounded-md w-full mt-10 hover:bg-red-700 transition">
                 {variants === "login" ? "Login" : "Sign up"}
               </button>
               <p className="text-neutral-500 mt-12">
