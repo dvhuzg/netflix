@@ -25,7 +25,6 @@ export default function Home() {
   const { data: user } = useCurrentUser();
   const { data: movies = [] } = useMovieList();
   const { data: favorites = [] } = useFavorites();
-  console.log("favorites", favorites);
   return (
     <>
       <Navbar />
