@@ -27,7 +27,7 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ visible }) => {
         <div
           onClick={() => signOut()}
           className="px-3 text-center text-white text-sm hover:underline">
-          Sign out of Netfix
+          Sign out of Netflix
         </div>
       </div>
     </div>
