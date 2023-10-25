@@ -5,10 +5,11 @@ interface AccountMenuProps {
   visible: boolean;
 }
 const AccountMenu: React.FC<AccountMenuProps> = ({ visible }) => {
+  const { data: user } = useCurrentUser();
+
   if (!visible) {
     return null;
   }
-  const { data: user } = useCurrentUser();
 
   return (
     <div className="bg-black w-56 absolute top-14 right-0 py-5 flex-col border-2 border-gray-800 flex">
@@ -26,7 +27,8 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ visible }) => {
         <hr className="bg-gray-600 border-0 h-px my-4" />
         <div
           onClick={() => signOut()}
-          className="px-3 text-center text-white text-sm hover:underline">
+          className="px-3 text-center text-white text-sm hover:underline"
+        >
           Sign out of Netflix
         </div>
       </div>
