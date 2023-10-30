@@ -4,9 +4,10 @@ import FavoriteButton from "@/components/FavoriteButton";
 import { useRouter } from "next/router";
 import { BiChevronDown } from "react-icons/bi";
 import useInfoModal from "@/hooks/useInfoModal";
+import {MovieInterface} from "@/types";
 
 interface MovieCardProps {
-  data: Record<string, any>[];
+  data: MovieInterface;
 }
 const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
   const router = useRouter();
